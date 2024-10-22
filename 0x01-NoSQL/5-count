@@ -1,2 +1,2 @@
 //This script displays the number of documents in the collection school
-db.my_db.count();
+db.school.count();
