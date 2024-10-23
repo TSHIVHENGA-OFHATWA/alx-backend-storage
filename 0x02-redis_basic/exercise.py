@@ -63,11 +63,11 @@ class Cache:
         self._redis.set(id_key, data)
         return id_key
 
-    def get(self, key: str, fn: Callable = None,
+    def get(self, id_key: str, fn: Callable = None,
             ) -> Union[str, bytes, int, float]:
         """Get data from Redis by key and convert data to desired format."""
 
-        data = self._redis.get(key)
+        data = self._redis.get(id_key)
 
         return fn(data) if fn is not None else data
 
@@ -80,3 +80,26 @@ class Cache:
         "Get integer data from redis"""
 
         return self.get(key, int)
+
+
+def replay(fn: Callable) -> None:
+    """Displays the history of calls of particular function"""
+
+    if fn is None or not hasattr(fn, '__self__'):
+        return
+    redis_store = getattr(fn.__self__, '_redis', None)
+    if not isinstance(redis_store, redis.Redis):
+        return
+    f_name = fn.__qualname__
+    input_keys = '{}:inputs'.format(f_name)
+    output_keys = '{}:outputs'.format(f_name)
+    call_count = 0
+    if redis_store.exists(f_name) != 0:
+        call_count = int(redis_store.get(f_name))
+    print('{} was called {} times:'.format(fxn_name, fxn_call_count))
+    print(f"{f_name} was called {call_count} times:")
+    inputs = redis_store.lrange(input_keys, 0, -1)
+    outputs = redis_store.lrange(output_keys, 0, -1)
+    for ingoin, outgoin in zip(inputs, outputs):
+        print('{}(*{}) -> {}'.format(f_name, ingoin.decode("utf-8"),
+                                     outgoin,))
