@@ -65,18 +65,18 @@ class Cache:
 
     def get(self, key: str, fn: Callable = None,
             ) -> Union[str, bytes, int, float]:
-        """get data from Redis by key and convert data to desired format."""
+        """Get data from Redis by key and convert data to desired format."""
 
         data = self._redis.get(key)
 
         return fn(data) if fn is not None else data
 
     def gets_str(self, key: str) -> Optional[str]:
-        """get string data from redis"""
+        """Get string data from redis"""
 
         return self.get(key, lambda d: d.decode('utf-8'))
 
     def get_int(self, key: int) -> Optional[int]:
-        "get integer data from redis"""
+        "Get integer data from redis"""
 
         return self.get(key, int)
