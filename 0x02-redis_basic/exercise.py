@@ -22,7 +22,7 @@ class Cache:
         self._redis.set(id_key, data)
         return id_key
 
-    def get(self, key: str, fn: Optional[Callable[[Any], Union[str, bytes, int, float]]] = None
+    def get(self, key: str, fn: Optional[Callable[[Any], Union[str, bytes, int, float]]] = None,
             ) -> Optional[Union[str, bytes, int, float]]:
         """get data from Redis by key and convert data to desired format."""
 
