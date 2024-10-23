@@ -27,14 +27,8 @@ class Cache:
         """get data from Redis by key and convert data to desired format."""
 
         data = self._redis.get(key)
-
-        if data is None:
-            return None
-
-        if fn:
-            return fn(data)
-        else:
-            return data
+        
+        return fn(data) if fn is not None else data
 
     def gets_str(self, key: str) -> Optional[str]:
         """get string data from redis"""
