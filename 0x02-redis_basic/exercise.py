@@ -33,14 +33,15 @@ class Cache:
 
         if fn:
             return fn(data)
-        return data
+        else:
+            return data
 
     def gets_str(self, key: str) -> Optional[str]:
-        """get string from redis"""
+        """get string data from redis"""
 
         return self.get(key, lambda d: d.decode('utf-8'))
 
     def get_int(self,key: int) -> Optional[int]:
-        "get integer from redis"""
+        "get integer data from redis"""
 
         return self.get(key, int)
