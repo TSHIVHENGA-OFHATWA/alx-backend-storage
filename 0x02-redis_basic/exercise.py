@@ -96,7 +96,7 @@ def replay(fn: Callable) -> None:
     call_count = 0
     if redis_store.exists(f_name) != 0:
         call_count = int(redis_store.get(f_name))
-    print('{} was called {} times:'.format(fxn_name, fxn_call_count))
+    print('{} was called {} times:'.format(f_name, call_count))
     print(f"{f_name} was called {call_count} times:")
     inputs = redis_store.lrange(input_keys, 0, -1)
     outputs = redis_store.lrange(output_keys, 0, -1)
